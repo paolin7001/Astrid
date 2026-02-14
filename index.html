@@ -18,6 +18,19 @@ button{
     margin-top:30px;padding:15px 35px;font-size:18px;
     border:none;border-radius:10px;background:white;color:black;cursor:pointer;
 }
+.foto{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:15px;
+    margin:10px;
+    box-shadow:0 0 10px rgba(255,255,255,0.3);
+    transition:0.3s;
+}
+
+.foto:hover{
+    transform:scale(1.2);
+}
 button:hover{background:#ddd;}
 #carta{
     position:fixed;top:50%;left:50%;
@@ -41,9 +54,68 @@ button:hover{background:#ddd;}
 </style>
 </head>
 <body>
+<audio id="musica" loop>
+    <source src="unicos.mp3" type="audio/mpeg">
+</audio>
 
+<button onclick="toggleMusica()" id="btnMusica">🔊 Quitar sonido</button>
+
+<script>
+const musica = document.getElementById("musica");
+const btnMusica = document.getElementById("btnMusica");
+
+// Intentar reproducir automáticamente
+window.addEventListener("load", function () {
+    const playPromise = musica.play();
+
+    if (playPromise !== undefined) {
+        playPromise.catch(() => {
+            // Si el navegador bloquea autoplay,
+            // se reproducirá al primer clic en la página
+            document.body.addEventListener("click", function iniciarMusica() {
+                musica.play();
+                document.body.removeEventListener("click", iniciarMusica);
+            });
+        });
+    }
+});
+
+// Botón para activar / desactivar sonido
+function toggleMusica() {
+    if (musica.muted) {
+        musica.muted = false;
+        btnMusica.innerHTML = "🔊 Quitar sonido";
+    } else {
+        musica.muted = true;
+        btnMusica.innerHTML = "🔇 Activar sonido";
+    }
+}
+</script>
 <h1>Feliz San Valentín Mi Amor ❤️</h1>
 <p>Eres la persona más importante en mi vida</p>
+
+
+<button onclick="mostrarFotos()">Nuestros momentos 🖤</button>
+
+<div id="galeria" style="display:none; margin-top:20px;">
+    <img src="foto1.jpg" class="foto">
+    <img src="foto2.jpg" class="foto">
+    <img src="foto3.jpg" class="foto">
+    <img src="foto4.jpg" class="foto">
+    <img src="foto5.jpg" class="foto">
+</div>
+
+<script>
+function mostrarFotos(){
+    var galeria = document.getElementById("galeria");
+
+    if(galeria.style.display === "none"){
+        galeria.style.display = "block";
+    }else{
+        galeria.style.display = "none";
+    }
+}
+</script>
 
 <button onclick="mostrarCarta()">Abrir carta ❤️</button>
 
@@ -59,13 +131,7 @@ TE QUIEROOOO ❤️
 <button id="cerrar" onclick="cerrarCarta()">Cerrar</button>
 </div>
 
-<audio id="musica" loop>
-<source src="Siddhartha - Únicos (Letra).mp3" type="audio/mpeg">
-</audio>
-
 <script>
-const musica = document.getElementById("musica");
-
 function mostrarCarta(){
     document.getElementById("carta").style.display="block";
     musica.play();
