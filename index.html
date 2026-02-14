@@ -79,7 +79,11 @@ window.addEventListener("load", function () {
         });
     }
 });
-
+document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+        musica.pause();
+    }
+});
 // Botón para activar / desactivar sonido
 function toggleMusica() {
     if (musica.muted) {
